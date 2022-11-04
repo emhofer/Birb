@@ -1,0 +1,26 @@
+<div>
+    <ul class="list-group">
+        {% for chirp in feed %}
+        <li class="list-group-item d-flex justify-content-between">
+            <!-- Show chirp -->
+            <div class="text-start me-3">
+                {{ chirp["username"] }}: {{ chirp["text"] }}
+            </div>
+            <!-- Show like/unlike button -->
+            <div class="d-flex justify-content-end align-items-end">
+                {% if chirp["id"] in likes %}
+                <form action="/unlike" method="post" class="inlineForm">
+                    <input type="hidden" name="like" value={{chirp.id}}>
+                    <input class="btn btn-outline-danger btn-sm ms-2" type="submit" value="Unlike">
+                </form>
+                {% else %}
+                <form action="/like" method="post" class="inlineForm">
+                    <input type="hidden" name="chirp" value={{chirp.id}}>
+                    <input class="btn btn-outline-success btn-sm ms-2" type="submit" value="Like">
+                </form>
+                {% endif %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

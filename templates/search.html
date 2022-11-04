@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="mx-md-auto">
+    <div class="mt-3">
+        {% if not accounts %}
+        {% else %}
+        <button class="btn custBorder w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUsers" aria-expanded="true" aria-controls="collapseUsers">
+        Users
+        </button>
+        <ul class="list-group collapse show text-center" id="collapseUsers">
+            {% for account in accounts %}
+            <a class="list-group-item list-group-item-action" href="{{url_for('profile', name=account.username)}}">{{ account["username"] }}</a>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    <div class="my-3">
+        {% if not chirps %}
+        {% else %}
+        <button class="btn custBorder w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChirps" aria-expanded="true" aria-controls="collapseChirps">
+        Chirps
+        </button>
+        <ul class="list-group collapse show text-center" id="collapseChirps">
+            {% for chirp in chirps %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <!-- Show chirp -->
+                <span class="text-start me-3">
+                {{ chirp["username"] }}: {{ chirp["text"] }}
+                </span>
+                <!-- Show like/unlike button -->
+                {% if chirp["id"] in likes %}
+                <form action="/unlike" method="post" class="inlineForm">
+                    <input type="hidden" name="like" value={{chirp.id}}>
+                    <input class="btn btn-outline-danger" type="submit" value="Unlike">
+                </form>
+                {% else %}
+                <form action="/like" method="post" class="inlineForm">
+                    <input type="hidden" name="chirp" value={{chirp.id}}>
+                    <input class="btn btn-outline-success" type="submit" value="Like">
+                </form>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    {% if not accounts and not chirps %}
+    <div class="text-center">Nothing found.</div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1 class="text-center mt-3" id="usernameTitle">{{ user }}</h1>
+<div class="mx-auto">
+    {% if user == session["username"] %}
+    <div class="mx-auto mb-3">
+        <form action="/change" method="get">
+            <input class="btn custBorder" type="submit" value="Change username/password">
+        </form>
+    </div>
+    {% elif user in followingthem %}
+    <form action="/unfollow" method="post">
+        <input type="hidden" name="username" value={{user}}>
+        <input class="btn btn-outline-danger" type="submit" value="Unfollow">
+    </form>
+    {% else %}
+    <form action="/follow" method="post">
+        <input type="hidden" name="username" value={{user}}>
+        <input class="btn btn-outline-success" type="submit" value="Follow">
+    </form>
+    {% endif %}
+</div>
+<div class="row d-flex">
+    <div class="col-md-8 mb-3 order-1 order-md-0">
+        <!-- AJAX chirps will be displayed here-->
+        <button class="btn custBorder w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChirps" aria-expanded="true" aria-controls="collapseChirps">
+        Chirps
+        </button>
+        <div class="collapse show" id="collapseChirps">
+            <div id="chirpsDiv"></div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-3">
+            <button class="btn custBorder w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFollowing" aria-expanded="false" aria-controls="collapseFollowing">
+            Following<span class="badge text-bg-secondary ms-3">{{ following | length }}</span>
+            </button>
+            <ul class="list-group collapse text-center" id="collapseFollowing">
+                {% for fo in following %}
+                <a class="list-group-item list-group-item-action" href="{{url_for('profile', name=fo.following)}}">{{ fo["following"] }}</a>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="mb-3">
+            <button class="btn custBorder w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFollowers" aria-expanded="false" aria-controls="collapseFollowers">
+            Followers<span class="badge text-bg-secondary ms-3">{{ followers | length }}</span>
+            </button>
+            <ul class="list-group collapse text-center" id="collapseFollowers">
+                {% for fo in followers %}
+                <a class="list-group-item list-group-item-action" href="{{url_for('profile', name=fo.follower)}}">{{ fo["follower"] }}</a>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- AJAX likes will be displayed here-->
+        <div class="mb-3">
+            <button class="btn custBorder w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLikes" aria-expanded="true" aria-controls="collapseLikes">
+            Likes
+            </button>
+            <div class="collapse" id="collapseLikes">
+                <div id="likesDiv"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if user == session["username"] %}
+<div class="mx-auto mb-3">
+    <button class="btn custBorder" id="deleteButton">Delete account</button>
+</div>
+<div class="mx-auto mb-3" id="deleteConfirmation">
+    <form action="/delete" method="post" id="cancelForm">
+        <input type="hidden" name="username" value={{user}}>
+        <input class="btn btn-outline-danger" type="submit" value="Confirm: delete all user data">
+    </form>
+</div>
+{% endif %}
+{% endblock %}

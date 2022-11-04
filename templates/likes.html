@@ -1,0 +1,17 @@
+<ul class="list-group text-center">
+    {% for like in likes %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <!-- Display liked chirp-->
+        <span class="me-3">
+        {{ like["username"] }}: {{ like["text"] }}
+        </span>
+        <!-- Display unlike button if logged in user is on their own profile -->
+        {% if userid == session["user_id"] %}
+        <form action="/unlike" method="post" class="inlineForm">
+            <input type="hidden" name="like" value={{like.id}}>
+            <input class="btn btn-outline-danger" type="submit" value="Unlike">
+        </form>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>

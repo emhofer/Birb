@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <title>Final Project</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <link href="/static/styles.css" rel="stylesheet">
+        <!-- Include jQuery - https://www.w3schools.com/jquery/jquery_get_started.asp -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    </head>
+    <body class="h-100">
+        <div class="d-flex flex-column min-vh-100">
+            <nav class="navbar sticky-top navbar-expand-lg bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/">Birb</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        {% if session["user_id"] %}
+                        <div class="navbar-nav">
+                            <a class="nav-link" href="{{url_for('profile', name=session.username)}}">Profile</a>
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </div>
+                        <div class="navbar-nav ms-auto">
+                            <form class="d-flex" action="/search" method="get">
+                                <input class="form-control me-2" type="search" autocomplete="off" name="q" placeholder="Search user or chirp" required>
+                                <input class="btn btn-outline-success" type="hidden" value="Search">
+                            </form>
+                        </div>
+                        {% else %}
+                        <div class="navbar-nav">
+                            <a class="nav-link" href="/register">Register</a>
+                            <a class="nav-link" href="/login">Login</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+            <!-- Add popup messages with flask flash -->
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert alert-info text-center" class=flashes>
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+            <div class="container-fluid d-grid gap-3">
+                {% block body %}{% endblock %}
+            </div>
+            <div class="flex-grow-1"></div>
+            <footer class="text-center p-3 bg-light text-muted">Built by emhofer.xyz</footer>
+            <script src="/static/scripts.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+        </div>
+    </body>
+</html>

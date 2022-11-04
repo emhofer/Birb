@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1 class="text-center mt-3 mb-5">
+    Hello, <a id="usernameTitle" class="text-decoration-none" href="{{url_for('profile', name=session.username)}}">{{ session["username"] }}</a>
+</h1>
+<form class="d-flex mb-5" action="/chirp" method="POST">
+    <input class="form-control me-2" type="text" placeholder="What's up?" maxlength="300" name="chirp" id="chirp">
+    <input class="btn btn-primary" type="submit" value="Chirp">
+</form>
+<div class="row d-flex">
+    <div class="col-md-8 mb-3 order-1 order-md-0">
+        <!-- AJAX feed will be displayed here-->
+        <button class="btn custBorder w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFeed" aria-expanded="true" aria-controls="collapseFeed">
+        Feed
+        </button>
+        <div class="collapse show" id="collapseFeed">
+            <div id="feedDiv"></div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-3">
+            <button class="btn custBorder w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFollowing" aria-expanded="false" aria-controls="collapseFollowing">
+            Following<span class="badge text-bg-secondary ms-3">{{ following | length }}</span>
+            </button>
+            <ul class="list-group collapse text-center" id="collapseFollowing">
+                {% for fo in following %}
+                <a class="list-group-item list-group-item-action" href="{{url_for('profile', name=fo.following)}}">{{ fo["following"] }}</a>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="mb-3">
+            <button class="btn custBorder w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFollowers" aria-expanded="false" aria-controls="collapseFollowers">
+            Followers<span class="badge text-bg-secondary ms-3">{{ followers | length }}</span>
+            </button>
+            <ul class="list-group collapse text-center" id="collapseFollowers">
+                {% for fo in followers %}
+                <a class="list-group-item list-group-item-action" href="{{url_for('profile', name=fo.follower)}}">{{ fo["follower"] }}</a>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- AJAX likes will be displayed here-->
+        <div class="mb-3">
+            <button class="btn custBorder w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLikes" aria-expanded="true" aria-controls="collapseLikes">
+            Likes
+            </button>
+            <div class="collapse" id="collapseLikes">
+                <div id="likesDiv"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

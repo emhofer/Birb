@@ -1,0 +1,17 @@
+#deleteConfirmation {
+    display: none;
+    margin-top: 5px;
+}
+
+#cancelForm {
+    margin-top: 5px;
+}
+
+.inlineForm {
+    display: inline;
+}
+
+.custBorder {
+    border-style: solid;
+    border-color: black;
+}

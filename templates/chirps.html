@@ -1,0 +1,30 @@
+<ul class="list-group text-center">
+    {% for chirp in feed %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <!-- Show chirp -->
+        <span class=" text-start me-3">
+        {{ chirp["text"] }}
+        </span>
+        <div class="d-flex justify-content-end align-items-end">
+            <!-- Show buttons -->
+            {% if chirp["id"] in likes %}
+            <form action="/unlike" method="post" class="inlineForm">
+                <input type="hidden" name="like" value={{chirp.id}}>
+                <input class="btn btn-outline-danger btn-sm" type="submit" value="Unlike">
+            </form>
+            {% else %}
+            <form action="/like" method="post" class="inlineForm">
+                <input type="hidden" name="chirp" value={{chirp.id}}>
+                <input class="btn btn-outline-success btn-sm" type="submit" value="Like">
+            </form>
+            {% endif %}
+            {% if chirp["username"] == session["username"] %}
+            <form action="/deleteChirp" method="post" class="inlineForm">
+                <input type="hidden" name="delete" value={{chirp.id}}>
+                <input class="btn btn-outline-dark btn-sm ms-2" type="submit" value="Delete">
+            </form>
+            {% endif %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
